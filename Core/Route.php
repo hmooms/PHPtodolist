@@ -2,20 +2,78 @@
 
 class Route
 {
-    private static $routes = array();  
+    private $validRoutes = array();  
 
-    public static function add($route, $function)
-    {
-        self::$routes[] = $route;
-       
-        
-        $url = explode('/', $_GET['url']);
+    private $functions = array();
+
+    private $controller = '';
+
+    private $method = '';
+
+    private $params = [];
 
     
-        if($_GET['url'] == $route) {
+    public function add($route, $function)
+    {
+        $parsedRoute = $this->parsedRoute($route);
+
+        $this->validRoutes[] = $parsedRoute;
+
+        var_dump(is_callable($function));
+
+        $this->functions[] = $function;
+    }
+
+    private function parseUrl()
+    {
+        return explode('/', $_GET['url']);
+    }
+
+    private function parsedRoute($route)
+    {
+        return explode('/', $route);
+    }
+
+    public function run(){
+        $parsedUrl = $this->parseUrl();
+
+        // var_dump(gettype($this->validRoutes), $parsedRoute);
+
+        foreach ($this->validRoutes as $key => $value){
+            // var_dump($key);
+            if ($value[0] == $parsedUrl[0] && $value[1] == $parsedUrl[1] && count($value) == count($parsedUrl)){
+                
+                IDontKnowHowToNameThisMethodYet($this->functions[$key]);
+                
+                exit();
+            }
+        }
+
+        print_r("page not found!");
+    }
+
+    private function IDontKnowHowToNameThisMethodYet($function)
+    {
+        if (checkIfCallable($function)){
             $function->__invoke();
         }
-    }
-}
+        else {
+            // explode @ 
+            // set 0 to controller
+            // unset
+            // set 0 to action
+            // unset
+            // set the rest to params
+            // call user func array controller action params
+        }
 
+    }
+
+
+    private function checkIfCallable($function)
+    {
+        return is_callable($function);
+    }
+
+}
 ?>

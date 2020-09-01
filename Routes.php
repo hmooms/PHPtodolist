@@ -1,11 +1,15 @@
 <?php 
 
-Route::add('index.php', function() {
+$route = new Route;
+
+$route->add('index.php', function() {
     index::view('index');
 });
 
-Route::add('list/edit', function() {
-    todoList::view('list.edit'); // TODO make it pop up with ajax maybe in the future
-})
+$route->add('list/edit/{list}', function() {
+    todoList::view('list.edit'); 
+});
+
+$route->run();
 
 ?>
