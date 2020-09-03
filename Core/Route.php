@@ -13,7 +13,7 @@ class Route
     private $params = [];
 
     
-    public function add($route, $function)
+    public function add($route, $something)
     {
         $parsedRoute = $this->parsedRoute($route);
 
@@ -60,11 +60,10 @@ class Route
         else {
             // explode @ 
             // set 0 to controller
-            // unset
-            // set 0 to action
-            // unset
-            // set the rest to params
+            // set 1 to action
+            // set the needed params somehow 
             // call user func array controller action params
+            // profit
         }
 
     }

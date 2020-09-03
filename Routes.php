@@ -2,13 +2,9 @@
 
 $route = new Route;
 
-$route->add('index.php', function() {
-    index::view('index');
-});
+$route->add('index.php', 'Index@index');
 
-$route->add('list/edit/{list}', function() {
-    todoList::view('list.edit'); 
-});
+$route->add('list/edit', 'TodoList@edit');
 
 $route->run();
 
