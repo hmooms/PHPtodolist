@@ -10,6 +10,8 @@ spl_autoload_register(function($className){
     }
 });
 
+define("ROOT", __DIR__ . DIRECTORY_SEPARATOR);
+
 require_once('Routes.php');
 
 

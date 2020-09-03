@@ -2,10 +2,14 @@
 
 $route = new Route;
 
-$route->add('index.php', 'Index@index');
+$route->add('index.php', 'Home@index');
 
-$route->add('list/edit', 'TodoList@edit');
+// need a way to use POST
 
+// I want named params  \/
+$route->add('list/edit/{id}', 'TodoList@edit');
+
+$route->add('task/edit/{task-id}/{list-id}', 'Task@edit');
 $route->run();
 
 ?>
