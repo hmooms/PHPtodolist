@@ -2,9 +2,7 @@
 
 class Route
 {
-    private $validRoutes = array();  
-
-    private $functions = array();
+    private $validRoutes = array();
 
     private $controller = '';
 
@@ -13,50 +11,68 @@ class Route
     private $params = array();
 
     
-    public function add($route, $function)
+    public function add($route, $function, $method = 'GET')
     {
-        $parsedRoute = $this->parsedRoute($route);
 
-        $this->validRoutes[] = $parsedRoute;
+        /* its the validation that has yet to be made  
+        if (validRoute::validateRoute($route)) 
+        {
+            $validRoute = new validRoute($this->parsedRoute($route), $function, $method);
+        }
+        else 
+        {
+            echo "You are an idiot and didn't make a valid route. To be honest im not even mad, just dissapointed.";
+        } 
+        */
 
-        // var_dump(is_callable($function));
-
-        $this->functions[] = $function;
+        $validRoute = new validRoute($this->parsedRoute($route), $function, $method);
+        
+        $this->validRoutes[] = $validRoute;
     }
 
-    private function parseUrl()
-    {
-        return explode('/', $_GET['url']);
-    }
-
-    private function parsedRoute($route)
-    {
-        return explode('/', $route);
-    }
 
     public function run()
     {
         $parsedUrl = $this->parseUrl();
 
-        // get the paramaters from the url and put them as a array in the params property 
-        $params = $this->parseUrl();
-        unset($params[0], $params[1]);
-        $this->params = array_values($params);
+        $usedMethod = $_SERVER['REQUEST_METHOD']; // this should return either GET or POST.
+
+        
+        if ($usedMethod === 'POST') 
+        {
+            // get the params from post and put them in params
+            $this->params = $_POST; // i think?
+        }
+        else
+        {
+            // get the paramaters from the url and put them in the params property 
+            $params = $this->parseUrl();
+            unset($params[0], $params[1]);
+            $this->params = array_values($params);
+        }
 
         // check if the url is a valid url 
         foreach ($this->validRoutes as $key => $value)
         {
-            if ($value[0] == $parsedUrl[0] && $value[1] == $parsedUrl[1] && count($value) == count($parsedUrl))
+            if ($value->getRoute()[0] == $parsedUrl[0] && $value->getRoute()[1] == $parsedUrl[1] && count($value->getRoute()) == count($parsedUrl))
             {
-                $this->execute($this->functions[$key]);
-                
-                exit();
+                if ($usedMethod === $value->getMethod())
+                {
+                    $this->execute($value->getFunction());
+                    
+                    exit();
+                }
+                else 
+                {
+                    echo "You used the wrong request method.. *sigh* You are an idiot. If you are an user please don't try to play the system, you'd lose :p";
+                }
             }
         }
+        // testing
+        var_dump($usedMethod, $this->params);
 
         // in case that it isnt a valid url
-        pageNotFound();
-        
+        $this->pageNotFound();
     }
 
     // execute the function or method
@@ -74,13 +90,13 @@ class Route
             // testing
             var_dump($explodedFunction);
 
-            // set 0 to controller
+            // set 0, which is the class name, to controller
             $this->controller = $explodedFunction[0];
 
             // testing
             echo $this->controller . ' / ';
 
-            // set 1 to action
+            // set 1, which is the method name, to action
             $this->action = $explodedFunction[1];
 
             // testing
@@ -137,7 +153,17 @@ class Route
 
     private function pageNotFound()
     {
-        echo "This page is not found!";
+        echo "We are terribly sorry for the inconvenience, but the page you were looking for was not found. Probably one of our IDIOTIC programmers made a mistake.";
+    }
+
+    private function parseUrl()
+    {
+        return explode('/', $_GET['url']);
+    }
+
+    private function parsedRoute($route)
+    {
+        return explode('/', $route);
     }
 }
 ?>

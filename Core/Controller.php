@@ -2,7 +2,7 @@
 
 class Controller
 {
-    public static function view($view){
+    protected function view($view){
         require_once("./Views/".$view.".php");
     }
 }
