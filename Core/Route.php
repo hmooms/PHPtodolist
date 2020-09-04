@@ -68,6 +68,7 @@ class Route
                 }
             }
         }
+
         // testing
         var_dump($usedMethod, $this->params);
 
@@ -90,8 +91,8 @@ class Route
             // testing
             var_dump($explodedFunction);
 
-            // set 0, which is the class name, to controller
-            $this->controller = $explodedFunction[0];
+            // set 0, which is the class name, to controller 
+            $this->controller = $explodedFunction[0] . 'Controller';
 
             // testing
             echo $this->controller . ' / ';
@@ -107,20 +108,14 @@ class Route
             // check if the controller exists
             if (file_exists(ROOT .'Controllers/' . $this->controller . '.php'))
             {
-                // testing
-                echo '1 / ';
-
                 // check if the method exists
                 if (method_exists($this->controller, $this->action))
                 {
-                    // testing
-                    echo '3 / ';
-
                     // check if there are params
                     if ($this->params)
                     {
                         // testing
-                        echo '5 / ';
+                        echo '1 / ';
 
                         // execute the method with the params
                         call_user_func(array($this->controller, $this->action), $this->params);
@@ -128,7 +123,7 @@ class Route
                     else
                     {
                         // testing
-                        echo '6 / ';
+                        echo '2 / ';
 
                         // execute the method without params
                         call_user_func(array($this->controller, $this->action));
@@ -136,14 +131,14 @@ class Route
                 }
                 else 
                 {
-                    // testing
-                    echo '4 / ';
+                    // in case the method couldnt be found
+                    echo 'The method doesnt exist or couldnt be found. Are you stupid?';
                 }
             }
             else 
             {
-                // testing
-                echo '2';
+                // in case the controller couldnt be found
+                echo 'The controller doesnt exist or couldnt be found. You probably made a mistake *sigh*';
             }
             // profit?
         }

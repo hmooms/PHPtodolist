@@ -1,6 +1,6 @@
 <?php 
 
-class TodoList extends Controller
+class TodoListController extends Controller
 {
     public function edit($id)
     {
