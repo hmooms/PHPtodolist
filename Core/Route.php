@@ -10,7 +10,7 @@ class Route
 
     private $method = '';
 
-    private $params = [];
+    private $params = array();
 
     
     public function add($route, $function)
@@ -38,29 +38,29 @@ class Route
     {
         $parsedUrl = $this->parseUrl();
 
+        // get the paramaters from the url and put them as a array in the params property 
         $params = $this->parseUrl();
         unset($params[0], $params[1]);
         $this->params = array_values($params);
 
-        // var_dump(gettype($this->validRoutes), $parsedRoute);
-
+        // check if the url is a valid url 
         foreach ($this->validRoutes as $key => $value)
         {
-            // var_dump($key);
             if ($value[0] == $parsedUrl[0] && $value[1] == $parsedUrl[1] && count($value) == count($parsedUrl))
             {
-                $this->IDontKnowHowToNameThisMethodYet($this->functions[$key]);
+                $this->execute($this->functions[$key]);
                 
                 exit();
             }
         }
 
+        // in case that it isnt a valid url
         pageNotFound();
         
     }
 
-    // im so good at naming things
-    private function IDontKnowHowToNameThisMethodYet($function)
+    // execute the function or method
+    private function execute($function)
     {
         if (is_callable($function))
         {
@@ -71,6 +71,7 @@ class Route
             // explode @
             $explodedFunction = explode('@', $function); 
 
+            // testing
             var_dump($explodedFunction);
 
             // set 0 to controller
@@ -86,47 +87,51 @@ class Route
             echo $this->action . ' / ';
 
             var_dump($this->params);
-            // call user func array controller action params
+
+            // check if the controller exists
             if (file_exists(ROOT .'Controllers/' . $this->controller . '.php'))
             {
+                // testing
                 echo '1 / ';
-                require_once(ROOT . 'Controllers/' . $this->controller . '.php');
 
+                // check if the method exists
                 if (method_exists($this->controller, $this->action))
                 {
+                    // testing
                     echo '3 / ';
 
+                    // check if there are params
                     if ($this->params)
                     {
+                        // testing
                         echo '5 / ';
 
+                        // execute the method with the params
                         call_user_func(array($this->controller, $this->action), $this->params);
                     }
                     else
                     {
+                        // testing
                         echo '6 / ';
 
+                        // execute the method without params
                         call_user_func(array($this->controller, $this->action));
                     }
                 }
                 else 
                 {
+                    // testing
                     echo '4 / ';
                 }
             }
             else 
             {
+                // testing
                 echo '2';
             }
             // profit?
         }
 
-    }
-
-
-    private function checkIfCallable($function)
-    {
-        return is_callable($function);
     }
 
 
