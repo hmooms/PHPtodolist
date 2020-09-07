@@ -21,7 +21,7 @@ class Route
         }
         else 
         {
-            echo "You are an idiot and didn't make a valid route. To be honest im not even mad, just dissapointed.";
+            echo "The Route: " . $route . "you made is not valid.";
         } 
         */
 
@@ -37,20 +37,6 @@ class Route
 
         $usedMethod = $_SERVER['REQUEST_METHOD']; // this should return either GET or POST.
 
-        
-        if ($usedMethod === 'POST') 
-        {
-            // get the params from post and put them in params
-            $this->params = $_POST; // i think?
-        }
-        else
-        {
-            // get the paramaters from the url and put them in the params property 
-            $params = $this->parseUrl();
-            unset($params[0], $params[1]);
-            $this->params = array_values($params);
-        }
-
         // check if the url is a valid url 
         foreach ($this->validRoutes as $key => $value)
         {
@@ -58,13 +44,13 @@ class Route
             {
                 if ($usedMethod === $value->getMethod())
                 {
-                    $this->execute($value->getFunction());
+                    $this->execute($value->getFunction(), $value->getParamKeyNames());
                     
                     exit();
                 }
                 else 
                 {
-                    echo "You used the wrong request method.. *sigh* You are an idiot. If you are an user please don't try to play the system, you'd lose :p";
+                    echo "You used the wrong request method.";
                 }
             }
         }
@@ -77,7 +63,7 @@ class Route
     }
 
     // execute the function or method
-    private function execute($function)
+    private function execute($function, $keyNames)
     {
         if (is_callable($function))
         {
@@ -85,23 +71,47 @@ class Route
         }
         else 
         {
+            // set the parameters
+            if ($usedMethod === 'POST') 
+            {
+                // get the params from post and put them in params
+                $this->params = $_POST; // i think?
+            }
+            else
+            {
+                // get the paramaters from the url and put them in the params property 
+                $params = $this->parseUrl();
+
+                // remove the controller and method
+                unset($params[0], $params[1]);
+
+                // reset the keys
+                $params = array_values($params);
+
+                // set the key names and values
+                foreach ($params as $key => $value)
+                {
+                    $this->params[$keyNames[$key]] = $value;
+                }
+            }
+
             // explode @
             $explodedFunction = explode('@', $function); 
 
             // testing
-            var_dump($explodedFunction);
+            // var_dump($explodedFunction);
 
             // set 0, which is the class name, to controller 
             $this->controller = $explodedFunction[0] . 'Controller';
 
             // testing
-            echo $this->controller . ' / ';
+            // echo $this->controller . ' / ';
 
             // set 1, which is the method name, to action
             $this->action = $explodedFunction[1];
 
             // testing
-            echo $this->action . ' / ';
+            // echo $this->action . ' / ';
 
             var_dump($this->params);
 
@@ -132,13 +142,13 @@ class Route
                 else 
                 {
                     // in case the method couldnt be found
-                    echo 'The method doesnt exist or couldnt be found. Are you stupid?';
+                    echo 'The method doesnt exist or couldnt be found.';
                 }
             }
             else 
             {
                 // in case the controller couldnt be found
-                echo 'The controller doesnt exist or couldnt be found. You probably made a mistake *sigh*';
+                echo 'The controller doesnt exist or couldnt be found.';
             }
             // profit?
         }
@@ -148,7 +158,7 @@ class Route
 
     private function pageNotFound()
     {
-        echo "We are terribly sorry for the inconvenience, but the page you were looking for was not found. Probably one of our IDIOTIC programmers made a mistake.";
+        echo "The page you were looking for was not found.";
     }
 
     private function parseUrl()

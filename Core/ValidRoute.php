@@ -22,12 +22,18 @@ Class ValidRoute
 
     private function setParamKeyNames($route)
     {
-        // ^\{.+\}$ the regex
+        // find the key names (which have to be made with {} )
         $matches = preg_grep('/^\{.+\}$/', $route);
+
+        // reset keys
+        $matches = array_values($matches);
         
         // remove "{ }"
-        
-        // return matches
+        $keyNames = preg_replace('/[^a-zA-Z0-9\-\_\s]/', '', $matches);
+
+
+        // return the keyNames
+        $this->paramKeyNames = $keyNames;
     }
 
     public function getRoute()
@@ -43,5 +49,10 @@ Class ValidRoute
     public function getMethod()
     {
         return $this->method;
+    }
+
+    public function getParamKeyNames()
+    {
+        return $this->paramKeyNames;
     }
 }
