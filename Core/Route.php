@@ -44,7 +44,7 @@ class Route
             {
                 if ($usedMethod === $value->getMethod())
                 {
-                    $this->execute($value->getFunction(), $value->getParamKeyNames());
+                    $this->execute($value->getFunction(), $value->getParamKeyNames(), $usedMethod);
                     
                     exit();
                 }
@@ -55,15 +55,13 @@ class Route
             }
         }
 
-        // testing
-        var_dump($usedMethod, $this->params);
-
         // in case that it isnt a valid url
         $this->pageNotFound();
     }
+    
 
     // execute the function or method
-    private function execute($function, $keyNames)
+    private function execute($function, $keyNames, $usedMethod)
     {
         if (is_callable($function))
         {
@@ -71,49 +69,11 @@ class Route
         }
         else 
         {
+            // set the controller and the action
+            $this->setControllerAndAction($function);
+            
             // set the parameters
-            if ($usedMethod === 'POST') 
-            {
-                // get the params from post and put them in params
-                $this->params = $_POST; // i think?
-            }
-            else
-            {
-                // get the paramaters from the url and put them in the params property 
-                $params = $this->parseUrl();
-
-                // remove the controller and method
-                unset($params[0], $params[1]);
-
-                // reset the keys
-                $params = array_values($params);
-
-                // set the key names and values
-                foreach ($params as $key => $value)
-                {
-                    $this->params[$keyNames[$key]] = $value;
-                }
-            }
-
-            // explode @
-            $explodedFunction = explode('@', $function); 
-
-            // testing
-            // var_dump($explodedFunction);
-
-            // set 0, which is the class name, to controller 
-            $this->controller = $explodedFunction[0] . 'Controller';
-
-            // testing
-            // echo $this->controller . ' / ';
-
-            // set 1, which is the method name, to action
-            $this->action = $explodedFunction[1];
-
-            // testing
-            // echo $this->action . ' / ';
-
-            var_dump($this->params);
+            $this->setParameters($usedMethod, $keyNames);
 
             // check if the controller exists
             if (file_exists(ROOT .'Controllers/' . $this->controller . '.php'))
@@ -124,17 +84,11 @@ class Route
                     // check if there are params
                     if ($this->params)
                     {
-                        // testing
-                        echo '1 / ';
-
                         // execute the method with the params
                         call_user_func(array($this->controller, $this->action), $this->params);
                     }
                     else
                     {
-                        // testing
-                        echo '2 / ';
-
                         // execute the method without params
                         call_user_func(array($this->controller, $this->action));
                     }
@@ -156,15 +110,57 @@ class Route
     }
 
 
+    private function setControllerAndAction($function)
+    {
+         // explode @
+         $explodedFunction = explode('@', $function); 
+
+         // set 0, which is the class name, to controller 
+         $this->controller = $explodedFunction[0] . 'Controller';
+
+         // set 1, which is the method name, to action
+         $this->action = $explodedFunction[1];
+    }
+
+
+    private function setParameters($usedMethod, $keyNames)
+    {
+        if ($usedMethod === 'POST') 
+        {
+            // get the params from post and put them in params
+            $this->params = $_POST; // i think?
+        }
+        else
+        {
+            // get the paramaters from the url and put them in the params property 
+            $params = $this->parseUrl();
+
+            // remove the controller and method
+            unset($params[0], $params[1]);
+
+            // reset the keys
+            $params = array_values($params);
+
+            // set the key names and values
+            foreach ($params as $key => $value)
+            {
+                $this->params[$keyNames[$key]] = $value;
+            }
+        }
+    }
+
+
     private function pageNotFound()
     {
         echo "The page you were looking for was not found.";
     }
 
+
     private function parseUrl()
     {
         return explode('/', $_GET['url']);
     }
+
 
     private function parsedRoute($route)
     {
