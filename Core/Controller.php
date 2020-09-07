@@ -2,15 +2,12 @@
 
 class Controller
 {
-    protected function view($view)
+    protected function view($view, $data)
     {
         require_once("./Views/".$view.".php");
+        // $data?
     }
 
-    protected function with($request)
-    {
-        // make it possible to send data to the view so you can make forms.
-    }
 }
 
 ?>
