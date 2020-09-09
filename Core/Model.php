@@ -12,7 +12,8 @@ class Model
      */
     public static function all()
     {
-
+        self::DBConnect(); // use db class probably idk
+        $query = "SELECT * FROM " . self::$table;
     }
 
     /*
@@ -20,9 +21,17 @@ class Model
      */
     public static function find($id)
     {
-
+        self::DBConnect();
+        $query = "SELECT * FROM" . self::$table . "WHERE " . self::$primaryKey . " " . $id;
     }
 
+    protected function DBConnect()
+    {
 
+    } 
 
+    public static function get()
+    {
+        
+    }
 }

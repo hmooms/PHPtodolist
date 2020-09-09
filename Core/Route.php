@@ -35,6 +35,12 @@ class Route
     {
         $parsedUrl = $this->parseUrl();
 
+        // var_dump($_SERVER['HTTP_HOST']);
+
+        // var_dump($_GET['url']);
+
+        // var_dump($_SERVER['REQUEST_URI']);
+
         $usedMethod = $_SERVER['REQUEST_METHOD']; // this should return either GET or POST.
 
         // check if the url is a valid url 
