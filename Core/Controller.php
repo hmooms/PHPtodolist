@@ -8,6 +8,11 @@ class Controller
         // $data?
     }
 
+    protected function redirect()
+    {
+        
+    }
+
 }
 
 ?>

@@ -81,11 +81,12 @@ class Route
                 // check if the method exists
                 if (method_exists($this->controller, $this->action))
                 {
+                    $controllerObject = new $this->controller; 
                     // check if there are params
                     if ($this->params)
                     {
                         // execute the method with the params
-                        call_user_func(array($this->controller, $this->action), $this->params);
+                        call_user_func(array($controllerObject, $this->action), $this->params);
                     }
                     else
                     {
@@ -112,14 +113,14 @@ class Route
 
     private function setControllerAndAction($function)
     {
-         // explode @
-         $explodedFunction = explode('@', $function); 
+        // explode @
+        $explodedFunction = explode('@', $function); 
 
-         // set 0, which is the class name, to controller 
-         $this->controller = $explodedFunction[0] . 'Controller';
+        // set 0, which is the class name, to controller 
+        $this->controller = $explodedFunction[0] . 'Controller';
 
-         // set 1, which is the method name, to action
-         $this->action = $explodedFunction[1];
+        // set 1, which is the method name, to action
+        $this->action = $explodedFunction[1];
     }
 
 
