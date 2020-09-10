@@ -6,7 +6,8 @@ class TaskController extends Controller
     {
         echo "Here you can edit task " . $request['task-id'] . " from list " . $request['list-id'] . ".";
         
-        // $tasks = Task::find('*')->where('id', $request['task-id'])->get();
+        
+        // $tasks = Task::find($request['task-id']);
         // $list = List::find($request['list-id']);
         
         return $this->view('task.edit', ['task' => $request['task-id'], 'list' => $request['list-id']]);
