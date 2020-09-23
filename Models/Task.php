@@ -1,6 +1,7 @@
 <?php
 
+
 class Task extends Model
 {
-    private $name;
+    protected $table = 'tasks';
 }

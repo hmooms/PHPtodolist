@@ -8,7 +8,14 @@
 <body>
 
     
-    <h1>edit list <?php echo $data['list']; ?> </h1>
+    <h1>edit list <?php echo $data['list'][0]['id']; ?> </h1>
+
+    
+    <h1> <?php echo $data['task list 2'][0]['name']; ?>  </h1>
+    <?php 
+    
+        var_dump($data);
+    ?>
 
 
     <!-- link helper -->

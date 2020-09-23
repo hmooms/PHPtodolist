@@ -35,6 +35,7 @@ class Route
     {
         $parsedUrl = $this->parseUrl();
 
+        
         // var_dump($_SERVER['HTTP_HOST']);
 
         // var_dump($_GET['url']);
