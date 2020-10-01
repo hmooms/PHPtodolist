@@ -20,7 +20,15 @@ class Model
 
     }
 
+    public function update($data)
+    {
 
+    }
+
+    public function delete($data)
+    {
+        
+    }
 
 
 

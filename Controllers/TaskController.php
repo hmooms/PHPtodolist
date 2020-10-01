@@ -55,10 +55,16 @@ class TaskController extends Controller
         // code
         echo $data['something'];
 
-        // validate
+        $task = new Task;
 
+        $task->update([
+        'name' => $data['name'],
+
+        
+        ]);
         // update
-
         // redirect
+
+
     }
 }
