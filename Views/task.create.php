@@ -15,7 +15,11 @@
 
         <input type="text" name="name" placeholder="name"> <br>
 
-        <input type="hidden" name="list-id" value="<?php echo $data['list'][0]['id']; ?>"> 
+        <label for="description">Description: </label>
+
+        <input type="text" name="description" placeholder="description"> <br>
+
+        <input type="hidden" name="list_id" value="<?php echo $data['list'][0]['id']; ?>"> 
 
         <input type="submit" value="submit">
     

@@ -69,51 +69,44 @@ class Route
 
     // execute the function or method
     private function execute($function, $keyNames, $usedMethod)
-    {
-        if (is_callable($function))
-        {
-            $function->__invoke();
-        }
-        else 
-        {
-            // set the controller and the action
-            $this->setControllerAndAction($function);
-            
-            // set the parameters
-            $this->setParameters($usedMethod, $keyNames);
+    {        
+        // set the controller and the action
+        $this->setControllerAndAction($function);
+        
+        // set the parameters
+        $this->setParameters($usedMethod, $keyNames);
 
-            // check if the controller exists
-            if (file_exists(ROOT .'Controllers/' . $this->controller . '.php'))
+        // check if the controller exists
+        if (file_exists(ROOT .'Controllers/' . $this->controller . '.php'))
+        {
+            // check if the method exists
+            if (method_exists($this->controller, $this->action))
             {
-                // check if the method exists
-                if (method_exists($this->controller, $this->action))
+                $controllerObject = new $this->controller; 
+                // check if there are params
+                if ($this->params)
                 {
-                    $controllerObject = new $this->controller; 
-                    // check if there are params
-                    if ($this->params)
-                    {
-                        // execute the method with the params
-                        call_user_func(array($controllerObject, $this->action), $this->params);
-                    }
-                    else
-                    {
-                        // execute the method without params
-                        call_user_func(array($this->controller, $this->action));
-                    }
+                    // execute the method with the params
+                    call_user_func(array($controllerObject, $this->action), $this->params);
                 }
-                else 
+                else
                 {
-                    // in case the method couldnt be found
-                    echo 'The method doesnt exist or couldnt be found.';
+                    // execute the method without params
+                    call_user_func(array($controllerObject, $this->action));
                 }
             }
             else 
             {
-                // in case the controller couldnt be found
-                echo 'The controller doesnt exist or couldnt be found.';
+                // in case the method couldnt be found
+                echo 'The method doesnt exist or couldnt be found.';
             }
-            // profit?
         }
+        else 
+        {
+            // in case the controller couldnt be found
+            echo 'The controller doesnt exist or couldnt be found.';
+        }
+        // profit?
 
     }
 

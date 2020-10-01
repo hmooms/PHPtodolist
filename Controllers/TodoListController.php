@@ -1,13 +1,39 @@
 <?php 
 
+require(ROOT . 'Models/TodoList.php');
+
 class TodoListController extends Controller
 {
-    public function edit($id)
+    public function create()
     {
-        // i dont wanna have to do it like this [0]
-        echo "You can edit list " . $id["id"] . '.';
+        return $this->view('list.create');
+    }
 
-        // return $this->view()
+    public function store($data)
+    {
+        $list = new TodoList;
+        $list->store([
+            'name' => $data['name'],
+        ]); 
+
+        return $this->redirect('/'); // home page
+    }
+
+    public function edit($data)
+    {
+        $listObj = new TodoList;
+        $list = $listObj->find($data['id']);
+
+        return $this->view('list.edit', ['list' => $list]);
+    }
+
+    public function update($data)
+    {
+        $list = new TodoList;
+
+        $list->update([
+            'name' => $data['name'],
+        ], $data['id']);
     }
     
 }

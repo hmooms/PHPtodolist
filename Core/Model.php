@@ -9,19 +9,77 @@ class Model
     private $query = "";
 
 
+    /*
+     * $data expects array with named keys
+     */
     public function store($data)
     {
-        // create connection
-        $conn = $this->DBConnect();
-        
-        // check if table exists, if not create one.
-        
+        $this->query = "INSERT INTO " . $this->table . " (";
 
+        $i = 0; // used to check last in for each loop
+        $len = count($data);
+
+        foreach ($data as $column => $value)
+        {
+            $this->query = $this->query . $column;
+
+            if ($i < $len - 1)
+            {
+                $this->query = $this->query . ", ";
+                $i++;
+
+            }
+        }
+
+        $this->query = $this->query . ") VALUES (";
+       
+        $j = 0;
+
+        foreach ($data as $column => $value)
+        {
+            $this->query = $this->query . ":" . $column;
+
+            if ($j < $len - 1)
+            {
+                $this->query = $this->query . ", ";
+                $j++; 
+            }
+             
+        }
+
+        $this->query = $this->query . ")";
+
+        $conn = $this->DBConnect();
+
+        $conn->prepare($this->query)->execute($data);   
 
     }
 
-    public function update($data)
+    public function update($data, $id)
     {
+        $this->query = "UPDATE " . $this->table . " SET ";
+
+        $i = 0;
+        $len = count($data);
+
+        foreach ($data as $column => $value)
+        {
+            $this->query = $this->query . $column . "=:" . $column;
+
+            if ($i < $len - 1)
+            {
+                $this->query = $this->query . ", ";
+                $i++;
+            }
+        }
+
+        $this->query = $this->query . " WHERE " . $this->primaryKey . "=" . $id;
+
+        $conn = $this->DBConnect();
+        var_dump($this->query, $data);
+
+        $conn->prepare($this->query)->execute($data);
+
 
     }
 
@@ -81,9 +139,10 @@ class Model
         {
             $this->query = $this->query . " `" . $column . "`=" . $condition;
 
-            if (! $i == $len - 1) // not the last one in the loop
+            if ($i < $len - 1) // not the last one in the loop
             {
                 $this->query = $this->query . " AND ";
+                $i++;
             }
         }
         
@@ -143,9 +202,10 @@ class Model
         {
             $this->query = $this->query . $column;
 
-            if (! $i == $len - 1) // not the last one in the loop
+            if ($i < $len - 1) // not the last one in the loop
             {
                 $this->query = $this->query . ", ";
+                $i++;
             }
         }
     }
