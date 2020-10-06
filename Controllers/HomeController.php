@@ -1,7 +1,9 @@
 <?php 
 
-require(ROOT . 'Models/Task.php');
-require(ROOT . 'Models/TodoList.php');
+use Models\Task;
+use Models\TodoList;
+
+use Core\Controller;
 
 class HomeController extends Controller
 {
@@ -13,7 +15,7 @@ class HomeController extends Controller
         $taskObj = new Task;
         $tasks = $taskObj->all();
 
-        return $this->view('index');
+        return $this->view('index', ['lists' => $lists, 'tasks' => $tasks]);
     }
 }
 

@@ -1,4 +1,8 @@
-<?php 
+<?php
+
+namespace Core;
+
+use Core\ValidRoute;
 
 class Route
 {
@@ -10,21 +14,9 @@ class Route
 
     private $params = array();
 
-    
+
     public function add($route, $function, $method = 'GET')
     {
-
-        /* its the validation that has yet to be made  
-        if (validRoute::validateRoute($route)) 
-        {
-            $validRoute = new validRoute($this->parsedRoute($route), $function, $method);
-        }
-        else 
-        {
-            echo "The Route: " . $route . "you made is not valid.";
-        } 
-        */
-
         $validRoute = new validRoute($this->parsedRoute($route), $function, $method);
         
         $this->validRoutes[] = $validRoute;
@@ -34,13 +26,6 @@ class Route
     public function run()
     {
         $parsedUrl = $this->parseUrl();
-
-        
-        // var_dump($_SERVER['HTTP_HOST']);
-
-        // var_dump($_GET['url']);
-
-        // var_dump($_SERVER['REQUEST_URI']);
 
         $usedMethod = $_SERVER['REQUEST_METHOD']; // this should return either GET or POST.
 
@@ -79,10 +64,12 @@ class Route
         // check if the controller exists
         if (file_exists(ROOT .'Controllers/' . $this->controller . '.php'))
         {
+            require_once(ROOT .'Controllers/' . $this->controller . '.php');
             // check if the method exists
             if (method_exists($this->controller, $this->action))
             {
                 $controllerObject = new $this->controller; 
+                
                 // check if there are params
                 if ($this->params)
                 {

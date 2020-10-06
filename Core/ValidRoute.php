@@ -1,5 +1,7 @@
 <?php
 
+namespace Core;
+
 Class ValidRoute
 {
     private $route;
@@ -13,11 +15,6 @@ Class ValidRoute
         $this->function = $function;
         $this->method = $method;
         $this->setParamKeyNames($route);
-    }
-
-    public static function validateRoute($route)
-    {
-        // regular expresion ~
     }
 
     private function setParamKeyNames($route)

@@ -1,7 +1,9 @@
 <?php
 
-require(ROOT . 'Models/Task.php');
-require(ROOT . 'Models/TodoList.php');
+use Models\Task;
+use Models\TodoList;
+
+use Core\Controller;
 
 class TaskController extends Controller
 {
@@ -16,7 +18,6 @@ class TaskController extends Controller
 
     public function store($data)
     {
-        // need validation i think but i dont know how yet...its not important at the moment
         $task = new Task;
         $task->store([
             'name' => $data['name'],
@@ -24,20 +25,18 @@ class TaskController extends Controller
             'list_id' => $data['list_id'],
         ]);
 
-        return $this->redirect('/'); // homepage 
+        return $this->redirect(); // homepage 
     }
-    
-    public function edit($data)
-    {        
-        $taskObj = new Task;
-        $tasks = $taskObj->all();
-        $tasksList2 = $taskObj->where(['list-id' => '2'])->get();
 
+    public function edit($data)
+    {
+        $taskObj = new Task;
+        $task = $taskObj->find($data['task-id']);
 
         $listObj = new TodoList;
         $list = $listObj->find($data['list-id']);
         
-        return $this->view('task.edit', ['tasks' => $tasks, 'list' => $list, 'task list 2' => $tasksList2]);
+        return $this->view('task.edit', ['task' => $task, 'list' => $list]);
     }
 
     public function update($data)
@@ -51,9 +50,16 @@ class TaskController extends Controller
             'description' => $data['description'],
             'list_id' => $data['list_id'],
         ], $data['id']);
-        // update
-        // redirect
+        
+        return $this->redirect();
+    }
 
+    public function delete($data)
+    {
+        $task = new Task;
 
+        $task->delete($data);
+
+        return $this->redirect();
     }
 }

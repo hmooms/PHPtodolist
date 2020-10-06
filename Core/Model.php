@@ -1,5 +1,9 @@
 <?php
 
+namespace Core;
+
+use PDO;
+
 class Model 
 {
     protected $table;
@@ -14,7 +18,7 @@ class Model
      */
     public function store($data)
     {
-        $this->query = "INSERT INTO " . $this->table . " (";
+        $this->query = "INSERT INTO `" . $this->table . "` (";
 
         $i = 0; // used to check last in for each loop
         $len = count($data);
@@ -27,14 +31,13 @@ class Model
             {
                 $this->query = $this->query . ", ";
                 $i++;
-
             }
         }
 
         $this->query = $this->query . ") VALUES (";
        
         $j = 0;
-
+        
         foreach ($data as $column => $value)
         {
             $this->query = $this->query . ":" . $column;
@@ -49,15 +52,12 @@ class Model
 
         $this->query = $this->query . ")";
 
-        $conn = $this->DBConnect();
-
-        $conn->prepare($this->query)->execute($data);   
-
+        $this->set($data);
     }
 
     public function update($data, $id)
     {
-        $this->query = "UPDATE " . $this->table . " SET ";
+        $this->query = "UPDATE `" . $this->table . "` SET ";
 
         $i = 0;
         $len = count($data);
@@ -75,19 +75,23 @@ class Model
 
         $this->query = $this->query . " WHERE " . $this->primaryKey . "=" . $id;
 
-        $conn = $this->DBConnect();
-        var_dump($this->query, $data);
-
-        $conn->prepare($this->query)->execute($data);
-
-
+        $this->set($data);
     }
 
     public function delete($data)
     {
+        $this->query = "DELETE FROM `" . $this->table . "` WHERE " . $this->primaryKey . "=:id";
         
+        $this->set($data);
     }
 
+    private function set($data)
+    {
+        $conn = $this->DBConnect();
+        // var_dump($id, $this->query, $data);
+
+        $conn->prepare($this->query)->execute($data);
+    }
 
 
     /* 
@@ -148,13 +152,6 @@ class Model
         
         return $this;
     }
-
-    public function orderBy()
-    {
-
-        return $this;
-    }
-
     
     /*
      * execute the query more or less 
@@ -163,22 +160,14 @@ class Model
     {
         // create connection
         $conn = $this->DBConnect();
-        // check if table exists if it doesnt exist return error
 
-        // create query
         $stmt = $conn->prepare($this->query);
-        // get data
+        // get execute them!
         $stmt->execute();
-        // close connection 
-        
-        // $stmt->setFetchMode(PDO::FETCH_CLASS, get_class($this));
 
-        $result = $stmt->fetchAll();
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
         // return data;
         
-        var_dump($result);
-        
-        echo $this->query . ' <br>';
 
         return $result;
     }
@@ -191,7 +180,6 @@ class Model
         // create connection with constants defined in config
         return new PDO( DB_TYPE . ': host=' . DB_HOST . ';dbname=' . DB_NAME, DB_USER, DB_PASS );
     } 
-
 
     private function selectColumns($columns)
     {

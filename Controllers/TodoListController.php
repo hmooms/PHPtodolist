@@ -1,6 +1,9 @@
 <?php 
 
-require(ROOT . 'Models/TodoList.php');
+use Models\TodoList;
+use Models\Task;
+
+use Core\Controller;
 
 class TodoListController extends Controller
 {
@@ -16,7 +19,7 @@ class TodoListController extends Controller
             'name' => $data['name'],
         ]); 
 
-        return $this->redirect('/'); // home page
+        return $this->redirect(); // home page
     }
 
     public function edit($data)
@@ -34,6 +37,23 @@ class TodoListController extends Controller
         $list->update([
             'name' => $data['name'],
         ], $data['id']);
+
+        return $this->redirect();
+    }
+    public function delete($data)
+    {
+        $list = new TodoList;
+        
+        $taskObj = new Task; 
+        $tasks = $taskObj->where(['list_id' => $data['id']])->get();
+        
+        foreach ($tasks as $task)
+        {
+            $taskObj->delete(['id' => $task['id']]);
+        }
+        $list->delete($data);
+
+        return $this->redirect();
     }
     
 }
