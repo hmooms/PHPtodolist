@@ -6,7 +6,7 @@ class Controller
 {
     protected function view($view, $data = null)
     {
-        require_once("./Views/". $view .".php");
+        require_once("./Views/app.php");
     }
 
     protected function redirect($data = null)

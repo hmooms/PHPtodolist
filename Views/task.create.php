@@ -1,29 +1,18 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    
-    <h1>Create new Task for List: <?php echo $data['list'][0]['name'] ?></h1>
 
-    <form action="/phptodolist/task/store" method="post">
-    
-        <label for="name">Task name: </label>
+<h1>Create new Task for List: <?php echo $data['list'][0]['name'] ?></h1>
 
-        <input type="text" name="name" placeholder="name"> <br>
+<form action="/phptodolist/task/store" method="post">
 
-        <label for="description">Description: </label>
+    <label for="name">Task name: </label>
 
-        <input type="text" name="description" placeholder="description"> <br>
+    <input type="text" name="name" placeholder="name"> <br>
 
-        <input type="hidden" name="list_id" value="<?php echo $data['list'][0]['id']; ?>"> 
+    <label for="description">Description: </label>
 
-        <input type="submit" value="submit">
-    
-    </form>
+    <input type="text" name="description" placeholder="description"> <br>
 
-</body>
-</html>
+    <input type="hidden" name="list_id" value="<?php echo $data['list'][0]['id']; ?>"> 
+
+    <input type="submit" value="submit">
+
+</form>
