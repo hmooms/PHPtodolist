@@ -1,3 +1,6 @@
 RewriteEngine On
+# do not rewrite css, js , jpeg, gif and png
+RewriteCond %{REQUEST_URI} !\.(?:css|js|jpe?g|gif|png)$ [NC]
 
 RewriteRule ^(.+)$ index.php?url=$1 [L,QSA]
+

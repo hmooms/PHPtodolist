@@ -22,6 +22,28 @@ class TodoListController extends Controller
         return $this->redirect(); // home page
     }
 
+    public function show($data)
+    {
+        $listObj = new TodoList;
+        $list = $listObj->find($data['id']);
+
+        $taskObj = new Task;
+        if ($data['status'])
+        {
+            $tasks = $taskObj->where([
+                'list_id' => $data['id'],
+                'status' => $data['status']
+            ])->get();
+        }
+        else {
+            $tasks = $taskObj->where([
+                'list_id' => $data['id'],
+            ])->get();
+        }
+
+        return $this->view('list.show', ['list' => $list, 'tasks' => $tasks]);
+    }
+
     public function edit($data)
     {
         $listObj = new TodoList;

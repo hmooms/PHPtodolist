@@ -1,42 +1,106 @@
+<div class="album pt-5 bg-light h-100" >
 
-<h1>Index for todolists</h1> <br>
-
-<a href="/phptodolist/list/create">Create new list</a>
-
-<?php foreach ($data['lists'] as $list): ?>
+    <div class="container-fluid mx-0 h-100" >
     
-    <h3><a href="/phptodolist/list/edit/<?php echo $list['id']; ?>">list: <?php echo $list['name']; ?></a></h3>
+        <div class="row flex-row flex-nowrap scroller-x h-100"  >
 
-    <?php foreach ($data['tasks'] as $task): ?>
-
-        <?php if ($task['list_id'] == $list['id']): ?>
-        
-        <a href="/phptodolist/task/edit/<?php echo $task['id'] . "/" . $list['id']; ?>">Task name: <?php echo $task['name'] ?></a>
-
-        <p>Task description: <?php echo $task['description'] ?></p>
-
-        <form action="/phptodolist/task/delete" method="post">
-    
-            <input type="hidden" name="id" value="<?php echo $task['id']; ?>">
-                
-            <input type="submit" value="Delete task: <?php echo $task['name']; ?>">
-        
-        </form>
-        
-        <?php endif; ?>
-
-    <?php endforeach; ?>
-
-    <a href="/phptodolist/task/create/<?php echo $list['id'] ?>" >Create task</a> <br>
-
-    <br>
-
-    <form action="/phptodolist/list/delete" method="post">
-    
-        <input type="hidden" name="id" value="<?php echo $list['id']; ?>">
+            <?php foreach ($data['lists'] as $list): ?>
             
-        <input type="submit" value="Delete list: <?php echo $list['name']; ?>">
+                <div class="col-2">
 
-    </form>
+                    <div class="card bg-primary text-white px-2 mb-4 shadow-sm scroller-y">
+
+                        <h4 class="card-header bg-primary px-2 mb-2"><?= $list['name']; ?></h4>
+
+                            <?php foreach ($data['tasks'] as $task): ?>
+
+                                <?php if ($task['list_id'] == $list['id']): ?>
+
+                                    <div class="card text-dark bg-light mb-3 shadow-sm">
+
+                                        <div class="card-body">
+                                            
+                                            <h3 class="card-title"><?= $task['name'] ?></h3>
+
+                                            <p class="card-text"> <?= $task['description'] ?></p>
+
+                                            <div class="d-flex justify-content-between align-items-center">
+                                            
+                                                <div class="btn-group">
+                                                
+                                                    <a href="/phptodolist/task/edit/<?= $task['id'] . "/" . $list['id']; ?>" class="btn btn-sm btn-outline-primary">edit</a>
+
+                                                    <form action="/phptodolist/task/delete" method="post">
+                                                
+                                                        <input type="hidden" name="id" value="<?= $task['id']; ?>">
+                                                            
+                                                        <input class="btn btn-sm btn-outline-danger" type="submit" value="Delete">
+                                                    
+                                                    </form>
+                                                                                            
+                                                </div>
+                                            
+                                            </div>
+                                    
+                                        </div>
+                                    
+                                    </div>
+                                
+                                <?php endif; ?>
+
+                            <?php endforeach; ?>
+
+                        <div class="d-flex justify-content-center pb-3">
+
+                            <a class="btn btn-outline-success bg-success text-light" href="/phptodolist/task/create/<?= $list['id'] ?>" >
+                            
+                                <svg width="2em" height="2em" viewBox="0 0 16 16" class="bi bi-plus-circle" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                    <path fill-rule="evenodd" d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+                                </svg>
+
+                                Add Task
+                                    
+                            </a>
+
+                        </div>
+                    
+                    </div>
+                
+                
+                </div>
+                
+            <?php endforeach; ?>
+
+            <div class="col-2">
+
+                <div class="card bg-dark text-white px-2 mb-4 shadow-sm scroller-y">
+
+                    <h4 class="card-header bg-dark px-2 mb-2">Add List</h4>
+
+                    <div class="d-flex justify-content-center pb-3">
+
+                        <a class="btn btn-outline-success bg-success text-light" href="/phptodolist/list/create" >
+
+                            <svg width="2em" height="2em" viewBox="0 0 16 16" class="bi bi-plus-circle" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                <path fill-rule="evenodd" d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+                            </svg>
+                                
+                            Add List
+
+                        </a>
+
+                    </div>
+                
+                </div>
+
+            </div>
     
-<?php endforeach; ?>
+        </div>
+    
+    
+    </div>
+
+
+</div>

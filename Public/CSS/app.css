@@ -1,0 +1,17 @@
+.scroller-x {
+    overflow-x: auto;
+}
+.scroller-y {
+    overflow-y: auto;
+}
+html, body {
+    height: 100%;
+}
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1;
+}
