@@ -8,3 +8,5 @@
     <input type="text" name="name" placeholder="name"> <br>
 
     <input type="submit" value="submit">
+
+</form>
