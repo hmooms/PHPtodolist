@@ -48,12 +48,11 @@
 
         </select>
 
-        <input type="hidden" name="direction" value="<?= $data['direction']? ($data['direction'] == "ASC"? "DESC" : "ASC") : "ASC"; ?>">
+        <input type="hidden" name="direction" value="<?= (isset($data['direction'])? ($data['direction'] == "ASC"? "DESC" : "ASC") : "ASC"); ?>">
 
         <input class="btn btn-warning" type="submit" value="order">
 
     </form>
-
 
 </div>
 

@@ -88,7 +88,7 @@ class Model
     private function set($data)
     {
         $conn = $this->DBConnect();
-        // var_dump($id, $this->query, $data);
+        // var_dump($this->query, $data);
 
         $conn->prepare($this->query)->execute($data);
     }
@@ -149,7 +149,7 @@ class Model
                 $i++;
             }
         }
-        
+        // var_dump($conditions);
         return $this;
     }
 
@@ -157,8 +157,9 @@ class Model
     {
         $column = array_keys($data)[0];
 
-        $this->query .= " ORDER BY `" . $column . "` " . $data[0];
+        $this->query .= " ORDER BY `" . $column . "` " . $data[$column];
 
+        var_dump($data);
         return $this;
     }
     
@@ -177,6 +178,8 @@ class Model
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
         // return data;
         
+        var_dump($this->query);
+
 
         return $result;
     }

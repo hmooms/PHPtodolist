@@ -45,7 +45,7 @@ class TodoListController extends Controller
 
         $taskObj = new Task;
         $tasks = $taskObj->all();
-        $orderedTasks = $taskObj->where(['list_id' => $data['list-id']])->orderBy(['duration' => $data['direction']])->get();
+        $orderedTasks = $taskObj->where(['list_id' => $data['id']])->orderBy(['duration' => $data['direction']])->get();
 
         return $this->view('index', ['lists' => $lists, 'tasks' => $tasks, 'orderedTasks' => $orderedTasks, 'direction' => $data['direction']]);
     }
