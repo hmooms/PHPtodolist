@@ -11,7 +11,7 @@ class Controller
 
     protected function redirect($data = null)
     {
-        header('Location: /' . APP_NAME . $data);
+        header('Location: /' . APP_NAME . "/" . $data);
     }
 
 }

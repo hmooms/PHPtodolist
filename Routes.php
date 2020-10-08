@@ -6,9 +6,11 @@ $route = new Route;
 
 $route->add('index.php', 'Home@index');
 
+$route->add('ordered', 'TodoList@orderBy', 'POST');
+$route->add('sorted', 'TodoList@sort', 'POST');
+
 $route->add('list/create', 'TodoList@create');
 $route->add('list/store', 'TodoList@store', 'POST');
-$route->add('list/show', 'TodoList@show', 'POST');
 $route->add('list/edit/{id}', 'TodoList@edit');
 $route->add('list/update', 'TodoList@update', 'POST');
 $route->add('list/delete', 'TodoList@delete', 'POST');

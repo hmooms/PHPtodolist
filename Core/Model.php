@@ -25,32 +25,32 @@ class Model
 
         foreach ($data as $column => $value)
         {
-            $this->query = $this->query . $column;
+            $this->query .= $column;
 
             if ($i < $len - 1)
             {
-                $this->query = $this->query . ", ";
+                $this->query .= ", ";
                 $i++;
             }
         }
 
-        $this->query = $this->query . ") VALUES (";
+        $this->query .= ") VALUES (";
        
         $j = 0;
         
         foreach ($data as $column => $value)
         {
-            $this->query = $this->query . ":" . $column;
+            $this->query .= ":" . $column;
 
             if ($j < $len - 1)
             {
-                $this->query = $this->query . ", ";
+                $this->query .= ", ";
                 $j++; 
             }
              
         }
 
-        $this->query = $this->query . ")";
+        $this->query .= ")";
 
         $this->set($data);
     }
@@ -64,16 +64,16 @@ class Model
 
         foreach ($data as $column => $value)
         {
-            $this->query = $this->query . $column . "=:" . $column;
+            $this->query .= $column . "=:" . $column;
 
             if ($i < $len - 1)
             {
-                $this->query = $this->query . ", ";
+                $this->query .= ", ";
                 $i++;
             }
         }
 
-        $this->query = $this->query . " WHERE " . $this->primaryKey . "=" . $id;
+        $this->query .= " WHERE " . $this->primaryKey . "=" . $id;
 
         $this->set($data);
     }
@@ -104,7 +104,7 @@ class Model
         
         $this->selectColumns($columns);
                 
-        $this->query = $this->query . " FROM `" . $this->table . "`";
+        $this->query .= " FROM `" . $this->table . "`";
         return $this->get();
     }
 
@@ -118,7 +118,7 @@ class Model
                 
         $this->selectColumns($columns);
         
-        $this->query = $this->query . " FROM `" . $this->table . "` WHERE `" . $this->primaryKey . "`=" . $id;
+        $this->query .= " FROM `" . $this->table . "` WHERE `" . $this->primaryKey . "`=" . $id;
         return $this->get();
     }
 
@@ -134,22 +134,31 @@ class Model
 
         $this->selectColumns($columns);
         
-        $this->query = $this->query . " FROM `" . $this->table . "` WHERE ";
+        $this->query .= " FROM `" . $this->table . "` WHERE ";
         
         $i = 0; // used to check last in for each loop
         $len = count($conditions);
 
         foreach ($conditions as $column => $condition)
         {
-            $this->query = $this->query . " `" . $column . "`=" . $condition;
+            $this->query .= " `" . $column . "`=" . $condition;
 
             if ($i < $len - 1) // not the last one in the loop
             {
-                $this->query = $this->query . " AND ";
+                $this->query .= " AND ";
                 $i++;
             }
         }
         
+        return $this;
+    }
+
+    public function orderBy($data)
+    {
+        $column = array_keys($data)[0];
+
+        $this->query .= " ORDER BY `" . $column . "` " . $data[0];
+
         return $this;
     }
     
@@ -188,11 +197,11 @@ class Model
 
         foreach ($columns as $column)
         {
-            $this->query = $this->query . $column;
+            $this->query .= $column;
 
             if ($i < $len - 1) // not the last one in the loop
             {
-                $this->query = $this->query . ", ";
+                $this->query .= ", ";
                 $i++;
             }
         }

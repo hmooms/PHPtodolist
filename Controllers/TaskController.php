@@ -23,6 +23,8 @@ class TaskController extends Controller
             'name' => $data['name'],
             'description' => $data['description'],
             'list_id' => $data['list_id'],
+            'status' => $data['status'],
+            'duration' => $data['duration'],
         ]);
 
         return $this->redirect(); // homepage 

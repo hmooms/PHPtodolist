@@ -22,27 +22,34 @@ class TodoListController extends Controller
         return $this->redirect(); // home page
     }
 
-    public function show($data)
+    public function sort($data)
     {
         $listObj = new TodoList;
-        $list = $listObj->find($data['id']);
+        $lists = $listObj->all();
 
         $taskObj = new Task;
-        if ($data['status'])
-        {
-            $tasks = $taskObj->where([
-                'list_id' => $data['id'],
-                'status' => $data['status']
-            ])->get();
-        }
-        else {
-            $tasks = $taskObj->where([
-                'list_id' => $data['id'],
-            ])->get();
-        }
+        $tasks = $taskObj->all();
+        $sortedTasks = $taskObj->where([
+            'list_id' => $data['id'],
+            'status' => $data['status']
+        ])->get();
 
-        return $this->view('list.show', ['list' => $list, 'tasks' => $tasks]);
+
+        return $this->view('index', ['lists' => $lists, 'tasks' => $tasks, 'SortedTasks' => $sortedTasks]);
     }
+
+    public function orderBy($data)
+    {
+        $listObj = new TodoList;
+        $lists = $listObj->all();
+
+        $taskObj = new Task;
+        $tasks = $taskObj->all();
+        $orderedTasks = $taskObj->where(['list_id' => $data['list-id']])->orderBy(['duration' => $data['direction']])->get();
+
+        return $this->view('index', ['lists' => $lists, 'tasks' => $tasks, 'orderedTasks' => $orderedTasks, 'direction' => $data['direction']]);
+    }
+
 
     public function edit($data)
     {
@@ -65,7 +72,8 @@ class TodoListController extends Controller
     public function delete($data)
     {
         $list = new TodoList;
-        
+        $list->delete($data);
+
         $taskObj = new Task; 
         $tasks = $taskObj->where(['list_id' => $data['id']])->get();
         
@@ -73,7 +81,7 @@ class TodoListController extends Controller
         {
             $taskObj->delete(['id' => $task['id']]);
         }
-        $list->delete($data);
+        
 
         return $this->redirect();
     }

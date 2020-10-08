@@ -12,9 +12,6 @@
         
     <input type="submit" value="Filter list">
 
-
     </select>
-
-
 
 </form>
