@@ -9,10 +9,17 @@ class Model
     protected $table;
     protected $primaryKey = 'id';
     protected $foreignKey;
+    protected $columns; 
 
     private $query = "";
     private $params;
 
+    public function __construct()
+    {        
+        // check if table exists 
+    
+        // if not create table
+    }
 
     /*
      * $data expects array with named keys
@@ -192,7 +199,27 @@ class Model
     private function DBConnect()
     {
         // create connection with constants defined in config
-        return new PDO( DB_TYPE . ': host=' . DB_HOST . ';dbname=' . DB_NAME, DB_USER, DB_PASS );
+        // return new PDO( DB_TYPE . ': host=' . DB_HOST . ';dbname=' . DB_NAME, DB_USER, DB_PASS );
+
+        $conn = new PDO( DB_TYPE . ': host=' . DB_HOST . ';', DB_USER, DB_PASS );
+
+        $conn->exec("CREATE DATABASE `" . DB_NAME . "`;");
+
+        try {    
+            return new PDO( DB_TYPE . ': host=' . DB_HOST . ';dbname=' . DB_NAME, DB_USER, DB_PASS );
+        } 
+        catch (PDOExeption $e) {
+            $conn = new PDO( DB_TYPE . ': host=' . DB_HOST . ';', DB_USER, DB_PASS );
+
+            $conn->exec("CREATE DATABASE `" . DB_NAME . "`;");
+            $conn = null;
+
+            return new PDO( DB_TYPE . ': host=' . DB_HOST . ';dbname=' . DB_NAME, DB_USER, DB_PASS );
+        }
+
+
+
+
     } 
 
     private function selectColumns($columns)
