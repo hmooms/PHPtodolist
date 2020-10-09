@@ -11,6 +11,7 @@ class Model
     protected $foreignKey;
 
     private $query = "";
+    private $params;
 
 
     /*
@@ -141,15 +142,17 @@ class Model
 
         foreach ($conditions as $column => $condition)
         {
-            $this->query .= " `" . $column . "`=" . $condition;
+            $this->query .= " `" . $column . "`=:" . $column;
 
             if ($i < $len - 1) // not the last one in the loop
             {
                 $this->query .= " AND ";
                 $i++;
             }
+
+            $this->params[$column] = $condition;
         }
-        // var_dump($conditions);
+        
         return $this;
     }
 
@@ -159,7 +162,7 @@ class Model
 
         $this->query .= " ORDER BY `" . $column . "` " . $data[$column];
 
-        var_dump($data);
+        // var_dump($data);
         return $this;
     }
     
@@ -173,12 +176,11 @@ class Model
 
         $stmt = $conn->prepare($this->query);
         // get execute them!
-        $stmt->execute();
+        $stmt->execute(($this->params? $this->params:null));
 
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
         // return data;
         
-        var_dump($this->query);
 
 
         return $result;

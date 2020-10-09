@@ -28,14 +28,15 @@ class TodoListController extends Controller
         $lists = $listObj->all();
 
         $taskObj = new Task;
-        $tasks = $taskObj->all();
-        $sortedTasks = $taskObj->where([
-            'list_id' => $data['id'],
+        $allTasks = $taskObj->all();
+        $tasks = $taskObj->where([
             'status' => $data['status']
         ])->get();
 
 
-        return $this->view('index', ['lists' => $lists, 'tasks' => $tasks, 'SortedTasks' => $sortedTasks]);
+        $allTasks = $this->unique_multidim_array($allTasks, 'status');
+
+        return $this->view('index', ['lists' => $lists, 'tasks' => $tasks, 'allTasks' => $allTasks]);
     }
 
     public function orderBy($data)
@@ -47,7 +48,22 @@ class TodoListController extends Controller
         $tasks = $taskObj->all();
         $orderedTasks = $taskObj->where(['list_id' => $data['id']])->orderBy(['duration' => $data['direction']])->get();
 
-        return $this->view('index', ['lists' => $lists, 'tasks' => $tasks, 'orderedTasks' => $orderedTasks, 'direction' => $data['direction']]);
+        foreach ($tasks as $key => $task)
+        {
+            if ($task['list_id'] == $data['id'])
+            {
+                unset($tasks[$key]);
+            }
+        } 
+        foreach ($orderedTasks as $orderedTask)
+        {
+            $tasks[] = $orderedTask;
+        }
+
+        $allTasks = $this->unique_multidim_array($tasks, 'status');
+
+
+        return $this->view('index', ['lists' => $lists, 'tasks' => $tasks, 'direction' => $data['direction'], 'allTasks' => $allTasks]);
     }
 
 

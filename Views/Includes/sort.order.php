@@ -6,23 +6,13 @@
 
     <form class="form-inline mx-3" action="/phptodolist/sorted" method="post">
 
-        <label for="list">list: </label>
-
-        <select class="mx-2 custom-select" name="id" id="list">
-
-            <?php foreach ($data['lists'] as $list): ?>
-                
-                <option value="<?= $list['id']; ?>"><?= $list['name']; ?></option>
-
-            <?php endforeach; ?>
-
         </select>
 
         <label for="status">status: </label>
 
         <select class="mx-2 custom-select" name="status" id="status">
 
-            <?php foreach ($data['tasks'] as $task): ?>
+            <?php foreach ($data['allTasks'] as $task): ?>
 
                 <option value="<?= $task['status']; ?>"><?= $task['status']; ?></option>
             

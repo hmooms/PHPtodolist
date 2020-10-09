@@ -1,12 +1,5 @@
 <?php
 include_once('./Views/Includes/sort.order.php');
-
-if ($data['sortedTasks']){
-    $selectedTasks = 'sortedTasks';
-}
-if ($data['orderedTasks']){
-    $selectedTasks = 'orderedTasks';
-}
 ?> 
 
 <div class="album pt-5 bg-light h-100" >
@@ -62,83 +55,39 @@ if ($data['orderedTasks']){
 
                                 <?php if ($task['list_id'] == $list['id']): ?>
                                     
-                                    <?php if ($data[$selectedTasks][0]['list_id'] == $list['id']): ?>
+                                    <div class="card text-dark bg-light mb-3 shadow-sm">
 
-                                        <?php foreach ($data[$selectedTasks] as $selectedTask): ?>
+                                        <div class="card-body">
                                             
-                                            <div class="card text-dark bg-light mb-3 shadow-sm">
+                                            <h3 class="card-title"><?= $task['name'] ?></h3>
 
-                                                <div class="card-body">
-                                                    
-                                                    <h3 class="card-title"><?= $selectedTask['name']; ?></h3>
+                                            <p class="card-text"><?= $task['description'] ?></p>
 
-                                                    <p class="card-text"> <?= $selectedTask['description']; ?></p>
+                                            <p class="card-text">status: <?= $task['status'] ?></p>
 
-                                                    <p class="card-text">status: <?= $selectedTask['status'] ?></p>
+                                            <p class="card-text">duration: <?= $task['duration'] ?></p>
 
-                                                    <p class="card-text">duration: <?= $selectedTask['duration'] ?></p>
+                                            <div class="d-flex justify-content-between align-items-center">
+                                            
+                                                <div class="btn-group">
+                                                
+                                                    <a href="/phptodolist/task/edit/<?= $task['id'] . "/" . $list['id']; ?>" class="btn btn-sm btn-outline-primary">edit</a>
 
-                                                    <div class="d-flex justify-content-between align-items-center">
-                                                    
-                                                        <div class="btn-group">
-                                                        
-                                                            <a href="/phptodolist/task/edit/<?= $selectedTask['id'] . "/" . $list['id']; ?>" class="btn btn-sm btn-outline-primary">edit</a>
-
-                                                            <form action="/phptodolist/task/delete" method="post">
-                                                        
-                                                                <input type="hidden" name="id" value="<?= $selectedTask['id']; ?>">
-                                                                    
-                                                                <input class="btn btn-sm btn-outline-danger" type="submit" value="Delete">
+                                                    <form action="/phptodolist/task/delete" method="post">
+                                                
+                                                        <input type="hidden" name="id" value="<?= $task['id']; ?>">
                                                             
-                                                            </form>
-                                                                                                    
-                                                        </div>
+                                                        <input class="btn btn-sm btn-outline-danger" type="submit" value="Delete">
                                                     
-                                                    </div>
-                                            
+                                                    </form>
+                                                                                            
                                                 </div>
                                             
                                             </div>
-                                        
-                                        <?php endforeach; ?>
-
-                                    <?php else: ?>
-
-                                        <div class="card text-dark bg-light mb-3 shadow-sm">
-
-                                            <div class="card-body">
-                                                
-                                                <h3 class="card-title"><?= $task['name'] ?></h3>
-
-                                                <p class="card-text"><?= $task['description'] ?></p>
-
-                                                <p class="card-text">status: <?= $task['status'] ?></p>
-
-                                                <p class="card-text">duration: <?= $task['duration'] ?></p>
-
-                                                <div class="d-flex justify-content-between align-items-center">
-                                                
-                                                    <div class="btn-group">
-                                                    
-                                                        <a href="/phptodolist/task/edit/<?= $task['id'] . "/" . $list['id']; ?>" class="btn btn-sm btn-outline-primary">edit</a>
-
-                                                        <form action="/phptodolist/task/delete" method="post">
-                                                    
-                                                            <input type="hidden" name="id" value="<?= $task['id']; ?>">
-                                                                
-                                                            <input class="btn btn-sm btn-outline-danger" type="submit" value="Delete">
-                                                        
-                                                        </form>
-                                                                                                
-                                                    </div>
-                                                
-                                                </div>
-                                        
-                                            </div>
-                                        
+                                    
                                         </div>
                                     
-                                    <?php endif; ?>
+                                    </div>
                                 
                                 <?php endif; ?>
 

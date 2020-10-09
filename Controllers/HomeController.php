@@ -15,7 +15,14 @@ class HomeController extends Controller
         $taskObj = new Task;
         $tasks = $taskObj->all();
 
-        return $this->view('index', ['lists' => $lists, 'tasks' => $tasks]);
+        foreach ($tasks as $task)
+        {
+            $allTasks[] = $task;
+        }
+
+        $allTasks = $this->unique_multidim_array($allTasks, 'status');
+
+        return $this->view('index', ['lists' => $lists, 'tasks' => $tasks, 'allTasks' => $allTasks]);
     }
 }
 
