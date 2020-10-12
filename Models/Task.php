@@ -13,7 +13,7 @@ class Task extends Model
         "name VARCHAR( 50 ) NOT NULL",
         "description VARCHAR( 250 ) NOT NULL",
         "status VARCHAR( 50 ) NOT NULL",
-        "duration INT( 11 ) NOT NULL;" 
+        "duration INT( 11 ) NOT NULL",
+        "list_id INT (11) NOT NULL;"
     ];
-
 }
