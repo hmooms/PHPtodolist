@@ -182,7 +182,7 @@ class Model
         $conn = $this->DBConnect();
 
         $stmt = $conn->prepare($this->query);
-        // get execute them!
+        // execute them!
         $stmt->execute(($this->params? $this->params:null));
 
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -205,9 +205,9 @@ class Model
 
         $conn->exec("CREATE DATABASE `" . DB_NAME . "`;");
 
-        try {    
+        try {
             return new PDO( DB_TYPE . ': host=' . DB_HOST . ';dbname=' . DB_NAME, DB_USER, DB_PASS );
-        } 
+        }
         catch (PDOExeption $e) {
             $conn = new PDO( DB_TYPE . ': host=' . DB_HOST . ';', DB_USER, DB_PASS );
 
